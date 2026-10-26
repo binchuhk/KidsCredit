@@ -24,7 +24,12 @@ export async function GET() {
       at: r.at,
       reviewedAt: r.reviewedAt,
       kid: r.kid,
-      reward: { id: r.reward.id, title: r.reward.title, cost: r.reward.cost },
+      reward: {
+        id: r.reward.id,
+        title: r.reward.title,
+        icon: r.reward.icon,
+        cost: r.reward.cost,
+      },
     })),
   });
 }

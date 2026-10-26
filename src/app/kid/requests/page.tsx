@@ -33,7 +33,9 @@ export default async function KidRequestsPage() {
           requests.map((item) => (
             <div className="list-item" key={item.id}>
               <div>
-                <div className="item-title">{item.reward.title}</div>
+                <div className="item-title">
+                  {item.reward.icon || "🎁"} {item.reward.title}
+                </div>
                 <div className="item-meta">
                   {item.reward.cost} 分 ·{" "}
                   {new Date(item.at).toLocaleString("zh-CN", {

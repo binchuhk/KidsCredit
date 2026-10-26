@@ -67,6 +67,7 @@ export default async function PenaltyPage({ searchParams }: Props) {
           penalties={penalties.map((p) => ({
             id: p.id,
             title: p.title,
+            icon: p.icon || "⚠️",
             points: p.points,
           }))}
           initialKidId={selectedId}
@@ -74,6 +75,7 @@ export default async function PenaltyPage({ searchParams }: Props) {
             id: item.id,
             type: item.type,
             title: item.title,
+            icon: item.icon || "",
             points: item.points,
             at: item.at.toISOString(),
           }))}

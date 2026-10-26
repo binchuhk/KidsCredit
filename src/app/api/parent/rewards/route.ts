@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { requireParent } from "@/lib/session";
+import { normalizeIcon } from "@/lib/icons";
 
 export async function GET() {
   const session = await requireParent();
@@ -20,13 +21,19 @@ export async function POST(request: Request) {
   const body = await request.json();
   const title = String(body.title || "").trim();
   const cost = Number(body.cost);
+  const icon = normalizeIcon(body.icon, "🎁");
 
   if (!title || !Number.isFinite(cost) || cost <= 0) {
     return NextResponse.json({ error: "请填写有效的兑换项和积分" }, { status: 400 });
   }
 
   const reward = await prisma.reward.create({
-    data: { familyId: session.familyId, title, cost: Math.floor(cost) },
+    data: {
+      familyId: session.familyId,
+      title,
+      icon,
+      cost: Math.floor(cost),
+    },
   });
   return NextResponse.json({ reward });
 }

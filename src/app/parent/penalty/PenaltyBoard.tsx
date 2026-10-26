@@ -4,11 +4,12 @@ import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 
 type Kid = { id: string; displayName: string; balance: number };
-type Penalty = { id: string; title: string; points: number };
+type Penalty = { id: string; title: string; icon: string; points: number };
 type LedgerItem = {
   id: string;
   type: "earn" | "spend";
   title: string;
+  icon?: string;
   points: number;
   at: string;
 };
@@ -110,6 +111,7 @@ export function PenaltyBoard({
             id: data.ledger.id,
             type: data.ledger.type,
             title: data.ledger.title,
+            icon: data.ledger.icon || penalty.icon,
             points: data.ledger.points,
             at:
               typeof data.ledger.at === "string"
@@ -206,7 +208,10 @@ export function PenaltyBoard({
                   setPendingPenalty(penalty);
                 }}
               >
-                <span className="score-card-title">{penalty.title}</span>
+                <span className="score-card-main">
+                  <span className="score-card-icon">{penalty.icon || "⚠️"}</span>
+                  <span className="score-card-title">{penalty.title}</span>
+                </span>
                 <span className="score-card-points spend">
                   {loadingId === penalty.id ? "…" : `-${penalty.points}`}
                 </span>
@@ -237,9 +242,12 @@ export function PenaltyBoard({
                 setPendingCancel(item);
               }}
             >
-              <div style={{ textAlign: "left" }}>
-                <div className="item-title">{item.title}</div>
-                <div className="item-meta">{formatTime(item.at)} · 点按取消</div>
+              <div style={{ textAlign: "left" }} className="row">
+                <span className="item-icon">{item.icon || "⚠️"}</span>
+                <div>
+                  <div className="item-title">{item.title}</div>
+                  <div className="item-meta">{formatTime(item.at)} · 点按取消</div>
+                </div>
               </div>
               <div className={`points ${item.type}`}>
                 {item.type === "earn" ? "+" : "-"}
@@ -265,7 +273,9 @@ export function PenaltyBoard({
             <p className="confirm-body">
               给 <strong>{kidName}</strong> 记惩罚
               <br />
-              <strong>{pendingPenalty.title}</strong>
+              <strong>
+                {pendingPenalty.icon || "⚠️"} {pendingPenalty.title}
+              </strong>
               <span className="points spend"> -{pendingPenalty.points}</span>
               <br />
               扣分后剩余 {balance - pendingPenalty.points} 分

@@ -64,6 +64,7 @@ export default async function ScorePage({ searchParams }: Props) {
           tasks={tasks.map((t) => ({
             id: t.id,
             title: t.title,
+            icon: t.icon || "⭐",
             points: t.points,
           }))}
           initialKidId={selectedId}
@@ -71,6 +72,7 @@ export default async function ScorePage({ searchParams }: Props) {
             id: item.id,
             type: item.type,
             title: item.title,
+            icon: item.icon || "",
             points: item.points,
             at: item.at.toISOString(),
           }))}

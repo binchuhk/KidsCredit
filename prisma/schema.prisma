@@ -61,6 +61,7 @@ model Task {
   familyId String
   family   Family @relation(fields: [familyId], references: [id], onDelete: Cascade)
   title    String
+  icon     String @default("⭐")
   points   Int
 }
 
@@ -69,6 +70,7 @@ model Penalty {
   familyId String
   family   Family @relation(fields: [familyId], references: [id], onDelete: Cascade)
   title    String
+  icon     String @default("⚠️")
   points   Int
 }
 
@@ -77,6 +79,7 @@ model Reward {
   familyId String
   family   Family          @relation(fields: [familyId], references: [id], onDelete: Cascade)
   title    String
+  icon     String          @default("🎁")
   cost     Int
   requests RedeemRequest[]
 }
@@ -87,6 +90,7 @@ model Ledger {
   kid       User       @relation("LedgerKid", fields: [kidUserId], references: [id], onDelete: Cascade)
   type      LedgerType
   title     String
+  icon      String     @default("")
   points    Int
   at        DateTime   @default(now())
   byUserId  String

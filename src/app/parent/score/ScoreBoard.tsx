@@ -4,11 +4,12 @@ import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 
 type Kid = { id: string; displayName: string; balance: number };
-type Task = { id: string; title: string; points: number };
+type Task = { id: string; title: string; icon: string; points: number };
 type LedgerItem = {
   id: string;
   type: "earn" | "spend";
   title: string;
+  icon?: string;
   points: number;
   at: string;
 };
@@ -140,6 +141,7 @@ export function ScoreBoard({
             id: data.ledger.id,
             type: data.ledger.type,
             title: data.ledger.title,
+            icon: data.ledger.icon || task.icon,
             points: data.ledger.points,
             at:
               typeof data.ledger.at === "string"
@@ -210,7 +212,10 @@ export function ScoreBoard({
                   setPendingTask(task);
                 }}
               >
-                <span className="score-card-title">{task.title}</span>
+                <span className="score-card-main">
+                  <span className="score-card-icon">{task.icon || "⭐"}</span>
+                  <span className="score-card-title">{task.title}</span>
+                </span>
                 <span className="score-card-points">
                   {loadingId === task.id ? "…" : `+${task.points}`}
                 </span>
@@ -241,9 +246,12 @@ export function ScoreBoard({
                 setPendingCancel(item);
               }}
             >
-              <div style={{ textAlign: "left" }}>
-                <div className="item-title">{item.title}</div>
-                <div className="item-meta">{formatTime(item.at)} · 点按取消</div>
+              <div style={{ textAlign: "left" }} className="row" >
+                <span className="item-icon">{item.icon || (item.type === "earn" ? "⭐" : "🎁")}</span>
+                <div>
+                  <div className="item-title">{item.title}</div>
+                  <div className="item-meta">{formatTime(item.at)} · 点按取消</div>
+                </div>
               </div>
               <div className={`points ${item.type}`}>
                 {item.type === "earn" ? "+" : "-"}
@@ -269,7 +277,9 @@ export function ScoreBoard({
             <p className="confirm-body">
               给 <strong>{kidName}</strong> 记上
               <br />
-              <strong>{pendingTask.title}</strong>
+              <strong>
+                {pendingTask.icon || "⭐"} {pendingTask.title}
+              </strong>
               <span className="points earn"> +{pendingTask.points}</span>
             </p>
             <div className="actions mt-16">

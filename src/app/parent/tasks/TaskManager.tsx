@@ -2,13 +2,15 @@
 
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
+import { IconPicker } from "@/components/IconPicker";
 
-type Task = { id: string; title: string; points: number };
+type Task = { id: string; title: string; icon: string; points: number };
 
 export function TaskManager({ initialTasks }: { initialTasks: Task[] }) {
   const router = useRouter();
   const [tasks, setTasks] = useState(initialTasks);
   const [title, setTitle] = useState("");
+  const [icon, setIcon] = useState("⭐");
   const [points, setPoints] = useState("10");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -21,7 +23,7 @@ export function TaskManager({ initialTasks }: { initialTasks: Task[] }) {
       const res = await fetch("/api/parent/tasks", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ title, points: Number(points) }),
+        body: JSON.stringify({ title, icon, points: Number(points) }),
       });
       const data = await res.json();
       if (!res.ok) {
@@ -30,6 +32,7 @@ export function TaskManager({ initialTasks }: { initialTasks: Task[] }) {
       }
       setTasks((prev) => [data.task, ...prev].sort((a, b) => b.points - a.points));
       setTitle("");
+      setIcon("⭐");
       setPoints("10");
       router.refresh();
     } catch {
@@ -55,6 +58,7 @@ export function TaskManager({ initialTasks }: { initialTasks: Task[] }) {
       <section className="panel">
         <h2 className="section-title">添加任务</h2>
         <form className="form-grid" onSubmit={createTask}>
+          <IconPicker value={icon} onChange={setIcon} />
           <div className="field">
             <label htmlFor="taskTitle">任务名</label>
             <input
@@ -88,9 +92,12 @@ export function TaskManager({ initialTasks }: { initialTasks: Task[] }) {
         ) : (
           tasks.map((task) => (
             <div className="list-item" key={task.id}>
-              <div>
-                <div className="item-title">{task.title}</div>
-                <div className="item-meta">+{task.points} 分</div>
+              <div className="row" style={{ justifyContent: "flex-start", gap: 10 }}>
+                <span className="item-icon">{task.icon || "⭐"}</span>
+                <div>
+                  <div className="item-title">{task.title}</div>
+                  <div className="item-meta">+{task.points} 分</div>
+                </div>
               </div>
               <button
                 className="btn btn-danger btn-sm"

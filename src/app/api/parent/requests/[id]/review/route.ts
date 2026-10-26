@@ -60,6 +60,7 @@ export async function POST(request: Request, { params }: Params) {
           kidUserId: redeem.kidUserId,
           type: "spend",
           title: redeem.reward.title,
+          icon: redeem.reward.icon,
           points: redeem.reward.cost,
           byUserId: session.userId,
         },

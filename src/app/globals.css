@@ -573,11 +573,51 @@ select {
   cursor: wait;
 }
 
+.score-card-main {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.score-card-icon,
+.item-icon {
+  font-size: 1.75rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.item-icon {
+  font-size: 1.4rem;
+}
+
 .score-card-title {
   font-family: var(--font-display);
   font-size: 1.25rem;
   font-weight: 600;
   color: var(--ink);
+}
+
+.icon-picker {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+}
+
+.icon-pick {
+  appearance: none;
+  border: 1px solid var(--line);
+  background: #fff;
+  border-radius: 12px;
+  min-height: 44px;
+  font-size: 1.35rem;
+  cursor: pointer;
+}
+
+.icon-pick.active {
+  border-color: var(--accent);
+  background: #e8f4f3;
+  box-shadow: 0 0 0 2px rgba(15, 143, 138, 0.2);
 }
 
 .score-card-points {

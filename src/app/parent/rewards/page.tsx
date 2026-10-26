@@ -64,6 +64,7 @@ export default async function RewardsPage({ searchParams }: Props) {
           rewards={rewards.map((r) => ({
             id: r.id,
             title: r.title,
+            icon: r.icon || "🎁",
             cost: r.cost,
           }))}
           initialKidId={selectedId}
@@ -71,6 +72,7 @@ export default async function RewardsPage({ searchParams }: Props) {
             id: item.id,
             type: item.type,
             title: item.title,
+            icon: item.icon || "",
             points: item.points,
             at: item.at.toISOString(),
           }))}

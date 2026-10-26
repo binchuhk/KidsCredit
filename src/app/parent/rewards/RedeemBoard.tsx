@@ -4,11 +4,12 @@ import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 
 type Kid = { id: string; displayName: string; balance: number };
-type Reward = { id: string; title: string; cost: number };
+type Reward = { id: string; title: string; icon: string; cost: number };
 type LedgerItem = {
   id: string;
   type: "earn" | "spend";
   title: string;
+  icon?: string;
   points: number;
   at: string;
 };
@@ -110,6 +111,7 @@ export function RedeemBoard({
             id: data.ledger.id,
             type: data.ledger.type,
             title: data.ledger.title,
+            icon: data.ledger.icon || reward.icon,
             points: data.ledger.points,
             at:
               typeof data.ledger.at === "string"
@@ -212,7 +214,10 @@ export function RedeemBoard({
                     setPendingReward(reward);
                   }}
                 >
-                  <span className="score-card-title">{reward.title}</span>
+                  <span className="score-card-main">
+                    <span className="score-card-icon">{reward.icon || "🎁"}</span>
+                    <span className="score-card-title">{reward.title}</span>
+                  </span>
                   <span className={`score-card-points spend`}>
                     {loadingId === reward.id ? "…" : `-${reward.cost}`}
                   </span>
@@ -244,9 +249,12 @@ export function RedeemBoard({
                 setPendingCancel(item);
               }}
             >
-              <div style={{ textAlign: "left" }}>
-                <div className="item-title">{item.title}</div>
-                <div className="item-meta">{formatTime(item.at)} · 点按取消</div>
+              <div style={{ textAlign: "left" }} className="row">
+                <span className="item-icon">{item.icon || "🎁"}</span>
+                <div>
+                  <div className="item-title">{item.title}</div>
+                  <div className="item-meta">{formatTime(item.at)} · 点按取消</div>
+                </div>
               </div>
               <div className={`points ${item.type}`}>
                 {item.type === "earn" ? "+" : "-"}
@@ -272,7 +280,9 @@ export function RedeemBoard({
             <p className="confirm-body">
               给 <strong>{kidName}</strong> 兑换
               <br />
-              <strong>{pendingReward.title}</strong>
+              <strong>
+                {pendingReward.icon || "🎁"} {pendingReward.title}
+              </strong>
               <span className="points spend"> -{pendingReward.cost}</span>
               <br />
               使用后剩余 {balance - pendingReward.cost} 分

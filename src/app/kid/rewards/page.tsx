@@ -26,7 +26,12 @@ export default async function KidRewardsPage() {
       </div>
       <RedeemList
         balance={profile?.balance ?? 0}
-        rewards={rewards.map((r) => ({ id: r.id, title: r.title, cost: r.cost }))}
+        rewards={rewards.map((r) => ({
+          id: r.id,
+          title: r.title,
+          icon: r.icon || "🎁",
+          cost: r.cost,
+        }))}
       />
     </>
   );

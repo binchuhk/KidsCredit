@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-type Reward = { id: string; title: string; cost: number };
+type Reward = { id: string; title: string; icon: string; cost: number };
 
 export function RedeemList({
   balance,
@@ -69,7 +69,10 @@ export function RedeemList({
                   setPendingReward(reward);
                 }}
               >
-                <span className="score-card-title">{reward.title}</span>
+                <span className="score-card-main">
+                  <span className="score-card-icon">{reward.icon || "🎁"}</span>
+                  <span className="score-card-title">{reward.title}</span>
+                </span>
                 <span className="score-card-points spend">
                   {loadingId === reward.id ? "…" : `-${reward.cost}`}
                 </span>
@@ -89,7 +92,10 @@ export function RedeemList({
           <div className="confirm-sheet panel" onClick={(e) => e.stopPropagation()}>
             <h2 className="section-title">确认申请兑换？</h2>
             <p className="confirm-body">
-              申请 <strong>{pendingReward.title}</strong>
+              申请{" "}
+              <strong>
+                {pendingReward.icon || "🎁"} {pendingReward.title}
+              </strong>
               <span className="points spend"> -{pendingReward.cost}</span>
               <br />
               提交后等家长批准才会扣分

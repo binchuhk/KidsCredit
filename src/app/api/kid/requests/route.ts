@@ -19,7 +19,12 @@ export async function GET() {
       status: r.status,
       at: r.at,
       reviewedAt: r.reviewedAt,
-      reward: { id: r.reward.id, title: r.reward.title, cost: r.reward.cost },
+      reward: {
+        id: r.reward.id,
+        title: r.reward.title,
+        icon: r.reward.icon,
+        cost: r.reward.cost,
+      },
     })),
   });
 }

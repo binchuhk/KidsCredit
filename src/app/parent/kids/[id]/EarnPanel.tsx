@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-type Task = { id: string; title: string; points: number };
+type Task = { id: string; title: string; icon?: string; points: number };
 
 export function EarnPanel({
   kidUserId,
@@ -57,9 +57,12 @@ export function EarnPanel({
     <div>
       {tasks.map((task) => (
         <div className="list-item" key={task.id}>
-          <div>
-            <div className="item-title">{task.title}</div>
-            <div className="item-meta">完成可得 {task.points} 分</div>
+          <div className="row" style={{ justifyContent: "flex-start", gap: 10 }}>
+            <span className="item-icon">{task.icon || "⭐"}</span>
+            <div>
+              <div className="item-title">{task.title}</div>
+              <div className="item-meta">完成可得 {task.points} 分</div>
+            </div>
           </div>
           <button
             className="btn btn-sun btn-sm"

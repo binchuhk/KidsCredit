@@ -2,13 +2,15 @@
 
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
+import { IconPicker } from "@/components/IconPicker";
 
-type Reward = { id: string; title: string; cost: number };
+type Reward = { id: string; title: string; icon: string; cost: number };
 
 export function RewardManager({ initialRewards }: { initialRewards: Reward[] }) {
   const router = useRouter();
   const [rewards, setRewards] = useState(initialRewards);
   const [title, setTitle] = useState("");
+  const [icon, setIcon] = useState("🎁");
   const [cost, setCost] = useState("30");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -21,7 +23,7 @@ export function RewardManager({ initialRewards }: { initialRewards: Reward[] }) 
       const res = await fetch("/api/parent/rewards", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ title, cost: Number(cost) }),
+        body: JSON.stringify({ title, icon, cost: Number(cost) }),
       });
       const data = await res.json();
       if (!res.ok) {
@@ -30,6 +32,7 @@ export function RewardManager({ initialRewards }: { initialRewards: Reward[] }) 
       }
       setRewards((prev) => [...prev, data.reward].sort((a, b) => a.cost - b.cost));
       setTitle("");
+      setIcon("🎁");
       setCost("30");
       router.refresh();
     } catch {
@@ -55,6 +58,7 @@ export function RewardManager({ initialRewards }: { initialRewards: Reward[] }) 
       <section className="panel">
         <h2 className="section-title">添加兑换项</h2>
         <form className="form-grid" onSubmit={createReward}>
+          <IconPicker value={icon} onChange={setIcon} />
           <div className="field">
             <label htmlFor="rewardTitle">名称</label>
             <input
@@ -88,9 +92,12 @@ export function RewardManager({ initialRewards }: { initialRewards: Reward[] }) 
         ) : (
           rewards.map((reward) => (
             <div className="list-item" key={reward.id}>
-              <div>
-                <div className="item-title">{reward.title}</div>
-                <div className="item-meta">{reward.cost} 分</div>
+              <div className="row" style={{ justifyContent: "flex-start", gap: 10 }}>
+                <span className="item-icon">{reward.icon || "🎁"}</span>
+                <div>
+                  <div className="item-title">{reward.title}</div>
+                  <div className="item-meta">{reward.cost} 分</div>
+                </div>
               </div>
               <button
                 className="btn btn-danger btn-sm"

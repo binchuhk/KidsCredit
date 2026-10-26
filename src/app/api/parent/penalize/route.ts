@@ -36,6 +36,7 @@ export async function POST(request: Request) {
           kidUserId,
           type: "spend",
           title: `惩罚：${penalty.title}`,
+          icon: penalty.icon,
           points: penalty.points,
           byUserId: session.userId,
         },

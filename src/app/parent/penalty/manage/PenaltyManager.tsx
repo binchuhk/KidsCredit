@@ -2,8 +2,9 @@
 
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
+import { IconPicker } from "@/components/IconPicker";
 
-type Penalty = { id: string; title: string; points: number };
+type Penalty = { id: string; title: string; icon: string; points: number };
 
 export function PenaltyManager({
   initialPenalties,
@@ -13,6 +14,7 @@ export function PenaltyManager({
   const router = useRouter();
   const [penalties, setPenalties] = useState(initialPenalties);
   const [title, setTitle] = useState("");
+  const [icon, setIcon] = useState("⚠️");
   const [points, setPoints] = useState("5");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -25,7 +27,7 @@ export function PenaltyManager({
       const res = await fetch("/api/parent/penalties", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ title, points: Number(points) }),
+        body: JSON.stringify({ title, icon, points: Number(points) }),
       });
       const data = await res.json();
       if (!res.ok) {
@@ -36,6 +38,7 @@ export function PenaltyManager({
         [data.penalty, ...prev].sort((a, b) => b.points - a.points)
       );
       setTitle("");
+      setIcon("⚠️");
       setPoints("5");
       router.refresh();
     } catch {
@@ -61,6 +64,7 @@ export function PenaltyManager({
       <section className="panel">
         <h2 className="section-title">添加惩罚项</h2>
         <form className="form-grid" onSubmit={createPenalty}>
+          <IconPicker value={icon} onChange={setIcon} />
           <div className="field">
             <label htmlFor="penaltyTitle">名称</label>
             <input
@@ -94,9 +98,12 @@ export function PenaltyManager({
         ) : (
           penalties.map((penalty) => (
             <div className="list-item" key={penalty.id}>
-              <div>
-                <div className="item-title">{penalty.title}</div>
-                <div className="item-meta points spend">-{penalty.points} 分</div>
+              <div className="row" style={{ justifyContent: "flex-start", gap: 10 }}>
+                <span className="item-icon">{penalty.icon || "⚠️"}</span>
+                <div>
+                  <div className="item-title">{penalty.title}</div>
+                  <div className="item-meta points spend">-{penalty.points} 分</div>
+                </div>
               </div>
               <button
                 className="btn btn-danger btn-sm"

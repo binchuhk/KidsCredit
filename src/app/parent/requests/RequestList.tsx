@@ -8,7 +8,7 @@ type RequestItem = {
   status: "pending" | "approved" | "rejected";
   at: string;
   kid: { id: string; displayName: string };
-  reward: { id: string; title: string; cost: number };
+  reward: { id: string; title: string; icon?: string; cost: number };
 };
 
 const statusLabel = {
@@ -62,7 +62,7 @@ export function RequestList({ initialRequests }: { initialRequests: RequestItem[
           <div className="list-item" key={item.id} style={{ alignItems: "flex-start" }}>
             <div style={{ flex: 1 }}>
               <div className="item-title">
-                {item.kid.displayName} · {item.reward.title}
+                {item.kid.displayName} · {item.reward.icon || "🎁"} {item.reward.title}
               </div>
               <div className="item-meta">
                 {item.reward.cost} 分 ·{" "}

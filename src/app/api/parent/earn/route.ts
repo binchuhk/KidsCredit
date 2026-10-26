@@ -36,6 +36,7 @@ export async function POST(request: Request) {
           kidUserId,
           type: "earn",
           title: task.title,
+          icon: task.icon,
           points: task.points,
           byUserId: session.userId,
         },

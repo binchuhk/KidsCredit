@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { requireParent } from "@/lib/session";
+import { normalizeIcon } from "@/lib/icons";
 
 export async function GET() {
   const session = await requireParent();
@@ -20,13 +21,19 @@ export async function POST(request: Request) {
   const body = await request.json();
   const title = String(body.title || "").trim();
   const points = Number(body.points);
+  const icon = normalizeIcon(body.icon, "⭐");
 
   if (!title || !Number.isFinite(points) || points <= 0) {
     return NextResponse.json({ error: "请填写有效的任务名和积分" }, { status: 400 });
   }
 
   const task = await prisma.task.create({
-    data: { familyId: session.familyId, title, points: Math.floor(points) },
+    data: {
+      familyId: session.familyId,
+      title,
+      icon,
+      points: Math.floor(points),
+    },
   });
   return NextResponse.json({ task });
 }

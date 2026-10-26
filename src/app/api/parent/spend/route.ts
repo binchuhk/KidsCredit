@@ -45,6 +45,7 @@ export async function POST(request: Request) {
           kidUserId,
           type: "spend",
           title: reward.title,
+          icon: reward.icon,
           points: reward.cost,
           byUserId: session.userId,
         },
