@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <!-- 挥手的弧线 -->
+  <path d="M148 44 Q 166 30 162 12" fill="none" stroke="#ffb84d" stroke-width="5" stroke-linecap="round"/>
+  <path d="M162 56 Q 184 42 182 20" fill="none" stroke="#ffd34d" stroke-width="5" stroke-linecap="round"/>
+  <!-- 身体 -->
+  <path d="M100 128 C 66 128 54 152 52 176 L148 176 C146 152 134 128 100 128 Z" fill="#4d9fff"/>
+  <!-- 左手 -->
+  <circle cx="56" cy="150" r="10" fill="#ffd9b3"/>
+  <!-- 举起的右手 -->
+  <path d="M136 136 L156 100" stroke="#4d9fff" stroke-width="16" stroke-linecap="round"/>
+  <circle cx="160" cy="92" r="12" fill="#ffd9b3"/>
+  <!-- 头 -->
+  <circle cx="100" cy="84" r="46" fill="#ffd9b3"/>
+  <!-- 头发 -->
+  <path d="M54 80 Q 52 36 100 34 Q 148 36 146 80 Q 140 58 128 56 Q 134 70 128 74 Q 122 54 100 52 Q 78 54 72 74 Q 66 70 72 56 Q 60 58 54 80 Z" fill="#6b4a2f"/>
+  <!-- 眼睛 -->
+  <circle cx="84" cy="88" r="5" fill="#333333"/>
+  <circle cx="116" cy="88" r="5" fill="#333333"/>
+  <circle cx="85.5" cy="86.5" r="1.6" fill="#ffffff"/>
+  <circle cx="117.5" cy="86.5" r="1.6" fill="#ffffff"/>
+  <!-- 腮红 -->
+  <ellipse cx="72" cy="102" rx="6" ry="4" fill="#ffb3a0" opacity="0.8"/>
+  <ellipse cx="128" cy="102" rx="6" ry="4" fill="#ffb3a0" opacity="0.8"/>
+  <!-- 微笑 -->
+  <path d="M88 104 Q 100 116 112 104" fill="none" stroke="#c25e4e" stroke-width="4" stroke-linecap="round"/>
+</svg>
