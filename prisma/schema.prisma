@@ -1,0 +1,107 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  parent
+  kid
+}
+
+enum LedgerType {
+  earn
+  spend
+}
+
+enum RedeemStatus {
+  pending
+  approved
+  rejected
+}
+
+model Family {
+  id         String    @id @default(cuid())
+  name       String
+  inviteCode String    @unique
+  createdAt  DateTime  @default(now())
+  users      User[]
+  tasks      Task[]
+  penalties  Penalty[]
+  rewards    Reward[]
+}
+
+model User {
+  id           String      @id @default(cuid())
+  familyId     String
+  family       Family      @relation(fields: [familyId], references: [id], onDelete: Cascade)
+  role         Role
+  username     String      @unique
+  passwordHash String
+  displayName  String
+  createdAt    DateTime    @default(now())
+  kidProfile   KidProfile?
+  ledgersBy    Ledger[]    @relation("LedgerBy")
+  ledgersFor   Ledger[]    @relation("LedgerKid")
+  redeemRequests RedeemRequest[] @relation("RedeemKid")
+  reviews      RedeemRequest[] @relation("RedeemReviewer")
+}
+
+model KidProfile {
+  userId  String @id
+  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  balance Int    @default(0)
+}
+
+model Task {
+  id       String @id @default(cuid())
+  familyId String
+  family   Family @relation(fields: [familyId], references: [id], onDelete: Cascade)
+  title    String
+  points   Int
+}
+
+model Penalty {
+  id       String @id @default(cuid())
+  familyId String
+  family   Family @relation(fields: [familyId], references: [id], onDelete: Cascade)
+  title    String
+  points   Int
+}
+
+model Reward {
+  id       String          @id @default(cuid())
+  familyId String
+  family   Family          @relation(fields: [familyId], references: [id], onDelete: Cascade)
+  title    String
+  cost     Int
+  requests RedeemRequest[]
+}
+
+model Ledger {
+  id        String     @id @default(cuid())
+  kidUserId String
+  kid       User       @relation("LedgerKid", fields: [kidUserId], references: [id], onDelete: Cascade)
+  type      LedgerType
+  title     String
+  points    Int
+  at        DateTime   @default(now())
+  byUserId  String
+  by        User       @relation("LedgerBy", fields: [byUserId], references: [id])
+}
+
+model RedeemRequest {
+  id           String       @id @default(cuid())
+  kidUserId    String
+  kid          User         @relation("RedeemKid", fields: [kidUserId], references: [id], onDelete: Cascade)
+  rewardId     String
+  reward       Reward       @relation(fields: [rewardId], references: [id], onDelete: Cascade)
+  status       RedeemStatus @default(pending)
+  at           DateTime     @default(now())
+  reviewedAt   DateTime?
+  reviewedById String?
+  reviewedBy   User?        @relation("RedeemReviewer", fields: [reviewedById], references: [id])
+}
